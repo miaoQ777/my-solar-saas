@@ -1,5 +1,6 @@
 CREATE TABLE "project" (
 	"id" text PRIMARY KEY NOT NULL,
+	"user_id" text NOT NULL,
 	"name" text NOT NULL,
 	"status" text NOT NULL,
 	"address" text NOT NULL,

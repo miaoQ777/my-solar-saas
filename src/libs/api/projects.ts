@@ -2,7 +2,8 @@
 
 // 此处将来替换为 Frappe ERP 的 API，只需改这一个文件。
 
-import { eq } from 'drizzle-orm';
+import { auth } from '@clerk/nextjs/server';
+import { and, eq } from 'drizzle-orm';
 
 import { db } from '@/libs/DB';
 import { projectSchema } from '@/models/Schema';
@@ -11,54 +12,65 @@ export type ProjectStatus = 'survey' | 'design' | 'proposal' | 'install' | 'comp
 
 export type Project = {
   id: string;
+  userId: string;
   name: string;
   status: ProjectStatus;
   address: string;
   capacity: string;
 };
 
-const seedData: Project[] = [
-  { id: '1', name: 'Rooftop Array A', status: 'install', address: 'Building 3, Shanghai', capacity: '50' },
-  { id: '2', name: 'Ground Mount B', status: 'install', address: 'Industrial Park, Suzhou', capacity: '200' },
-  { id: '3', name: 'Carport C', status: 'design', address: 'Office Complex, Beijing', capacity: '80' },
-  { id: '4', name: 'Community Solar D', status: 'complete', address: 'Residential Zone, Hangzhou', capacity: '150' },
-  { id: '5', name: 'Floating Array E', status: 'proposal', address: 'Reservoir Site, Nanjing', capacity: '500' },
-];
-
-async function ensureSeeded() {
-  const existing = await db.select().from(projectSchema);
-  if (existing.length === 0) {
-    for (const p of seedData) {
-      await db.insert(projectSchema).values(p);
-    }
-  }
-}
-
 export async function getProjects(): Promise<Project[]> {
-  await ensureSeeded();
-  return db.select().from(projectSchema) as unknown as Project[];
+  const { userId } = await auth();
+  if (!userId) {
+    return [];
+  }
+
+  return db.select().from(projectSchema).where(eq(projectSchema.userId, userId)) as unknown as Project[];
 }
 
-export type CreateProjectInput = Omit<Project, 'id'>;
+export type CreateProjectInput = Omit<Project, 'id' | 'userId'>;
 
 export async function createProject(input: CreateProjectInput): Promise<Project> {
-  const project: Project = {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+
+  const project = {
     id: String(Date.now()),
+    userId,
     ...input,
   };
   await db.insert(projectSchema).values(project);
-  return project;
+  return project as Project;
 }
 
-export type UpdateProjectInput = Partial<Omit<Project, 'id'>> & { id: string };
+export type UpdateProjectInput = Partial<Omit<Project, 'id' | 'userId'>> & { id: string };
 
 export async function updateProject(input: UpdateProjectInput): Promise<Project | undefined> {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+
   const { id, ...data } = input;
-  const result = await db.update(projectSchema).set(data).where(eq(projectSchema.id, id)).returning();
+  const result = await db
+    .update(projectSchema)
+    .set(data)
+    .where(and(eq(projectSchema.id, id), eq(projectSchema.userId, userId)))
+    .returning();
   return result.at(0) as Project | undefined;
 }
 
 export async function deleteProject(id: string): Promise<boolean> {
-  const result = await db.delete(projectSchema).where(eq(projectSchema.id, id)).returning();
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error('Unauthorized');
+  }
+
+  const result = await db
+    .delete(projectSchema)
+    .where(and(eq(projectSchema.id, id), eq(projectSchema.userId, userId)))
+    .returning();
   return result.length > 0;
 }

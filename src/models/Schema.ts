@@ -48,6 +48,7 @@ export const organizationSchema = pgTable(
 
 export const projectSchema = pgTable('project', {
   id: text('id').primaryKey(),
+  userId: text('user_id').notNull(),
   name: text('name').notNull(),
   status: text('status').notNull(),
   address: text('address').notNull(),
