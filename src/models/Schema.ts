@@ -46,6 +46,19 @@ export const organizationSchema = pgTable(
   },
 );
 
+export const projectSchema = pgTable('project', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  status: text('status').notNull(),
+  address: text('address').notNull(),
+  capacity: text('capacity').notNull(),
+  updatedAt: timestamp('updated_at', { mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+});
+
 export const todoSchema = pgTable('todo', {
   id: serial('id').primaryKey(),
   ownerId: text('owner_id').notNull(),

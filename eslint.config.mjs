@@ -57,6 +57,7 @@ export default antfu({
 }, {
   rules: {
     'import/order': 'off', // Avoid conflicts with `simple-import-sort` plugin
+    'perfectionist/sort-imports': 'off', // Avoid conflicts with `simple-import-sort` plugin
     'sort-imports': 'off', // Avoid conflicts with `simple-import-sort` plugin
     'style/brace-style': ['error', '1tbs'], // Use the default brace style
     'ts/consistent-type-definitions': ['error', 'type'], // Use `type` instead of `interface`

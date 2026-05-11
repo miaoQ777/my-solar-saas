@@ -11,6 +11,7 @@ export const ActiveLink = (props: { href: string; children: React.ReactNode }) =
   return (
     <Link
       href={props.href}
+      suppressHydrationWarning
       className={cn(
         'px-3 py-2',
         pathname.endsWith(props.href)

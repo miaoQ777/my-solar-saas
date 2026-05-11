@@ -91,6 +91,7 @@
     "todos": "Todos",
     "members": "Members",
     "billing": "Billing",
+    "projects": "Projects",
     "settings": "Settings"
   },
   "Dashboard": {
@@ -100,6 +101,9 @@
   "DashboardIndex": {
     "title_bar": "Dashboard",
     "title_bar_description": "Welcome to your dashboard",
+    "total_projects": "Total Projects",
+    "in_progress": "In Progress",
+    "completed": "Completed",
     "message_state_title": "Let's get started",
     "message_state_description": "You can customize this page by editing the file at <code>dashboard/page.tsx</code>",
     "message_state_button": "Star on GitHub",
@@ -130,6 +134,32 @@
     "message_state_title": "Payment successful",
     "message_state_description": "Your payment has been successfully processed. Thank you for your purchase!",
     "message_state_button": "Go back to Billing"
+  },
+  "Projects": {
+    "title_bar": "Projects",
+    "title_bar_description": "View and manage your solar projects",
+    "new_project": "New Project",
+    "create_project": "Create Project",
+    "edit_project": "Edit Project",
+    "save": "Save",
+    "project_name": "Project Name",
+    "project_name_placeholder": "Enter project name",
+    "address": "Installation Address",
+    "address_placeholder": "Enter installation address",
+    "capacity": "Capacity (kW)",
+    "capacity_placeholder": "Enter capacity in kW",
+    "status": "Status",
+    "status_survey": "Survey",
+    "status_design": "Design",
+    "status_proposal": "Proposal",
+    "status_install": "Install",
+    "status_complete": "Complete",
+    "cancel": "Cancel",
+    "submit": "Create",
+    "search_placeholder": "Search by name or address…",
+    "delete": "Delete",
+    "delete_confirm_title": "Delete Project",
+    "delete_confirm_description": "Are you sure you want to delete \"{name}\"? This action cannot be undone."
   },
   "DataTable": {
     "no_results": "No results."

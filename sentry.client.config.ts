@@ -32,5 +32,10 @@ Sentry.init({
 });
 
 if (process.env.NODE_ENV === 'development') {
-  Spotlight.init();
+  // Defer Spotlight init to avoid DOM injection before React hydration
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      Spotlight.init();
+    });
+  });
 }

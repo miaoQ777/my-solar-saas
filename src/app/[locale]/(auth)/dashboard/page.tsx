@@ -1,11 +1,29 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useCallback, useEffect, useState } from 'react';
 
 import { MessageState } from '@/features/dashboard/MessageState';
 import { TitleBar } from '@/features/dashboard/TitleBar';
 import { SponsorLogos } from '@/features/sponsors/SponsorLogos';
+import { getProjects } from '@/libs/api/projects';
 
 const DashboardIndexPage = () => {
   const t = useTranslations('DashboardIndex');
+  const [total, setTotal] = useState(0);
+  const [inProgress, setInProgress] = useState(0);
+  const [completed, setCompleted] = useState(0);
+
+  const loadStats = useCallback(async () => {
+    const projects = await getProjects();
+    setTotal(projects.length);
+    setInProgress(projects.filter(p => p.status !== 'complete').length);
+    setCompleted(projects.filter(p => p.status === 'complete').length);
+  }, []);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   return (
     <>
@@ -13,6 +31,27 @@ const DashboardIndexPage = () => {
         title={t('title_bar')}
         description={t('title_bar_description')}
       />
+
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="rounded-md border bg-card p-5">
+          <div className="text-sm font-medium text-muted-foreground">
+            {t('total_projects')}
+          </div>
+          <div className="mt-2 text-3xl font-bold">{total}</div>
+        </div>
+        <div className="rounded-md border bg-card p-5">
+          <div className="text-sm font-medium text-muted-foreground">
+            {t('in_progress')}
+          </div>
+          <div className="mt-2 text-3xl font-bold">{inProgress}</div>
+        </div>
+        <div className="rounded-md border bg-card p-5">
+          <div className="text-sm font-medium text-muted-foreground">
+            {t('completed')}
+          </div>
+          <div className="mt-2 text-3xl font-bold">{completed}</div>
+        </div>
+      </div>
 
       <MessageState
         icon={(

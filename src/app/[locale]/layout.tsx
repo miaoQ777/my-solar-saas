@@ -1,10 +1,9 @@
 import '@/styles/global.css';
 
-import type { Metadata } from 'next';
+import { type Metadata } from 'next';
 import { NextIntlClientProvider, useMessages } from 'next-intl';
-import { unstable_setRequestLocale } from 'next-intl/server';
-
-import { DemoBadge } from '@/components/DemoBadge';
+import { setRequestLocale } from 'next-intl/server';
+import { use } from 'react';
 import { AllLocales } from '@/utils/AppConfig';
 
 export const metadata: Metadata = {
@@ -38,29 +37,23 @@ export function generateStaticParams() {
 
 export default function RootLayout(props: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 }) {
-  unstable_setRequestLocale(props.params.locale);
+  const { locale } = use(props.params);
 
-  // Using internationalization in Client Components
+  setRequestLocale(locale);
+
   const messages = useMessages();
 
-  // The `suppressHydrationWarning` in <html> is used to prevent hydration errors caused by `next-themes`.
-  // Solution provided by the package itself: https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
-
-  // The `suppressHydrationWarning` attribute in <body> is used to prevent hydration errors caused by Sentry Overlay,
-  // which dynamically adds a `style` attribute to the body tag.
   return (
-    <html lang={props.params.locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
         {/* PRO: Dark mode support for Shadcn UI */}
         <NextIntlClientProvider
-          locale={props.params.locale}
+          locale={locale}
           messages={messages}
         >
           {props.children}
-
-          <DemoBadge />
         </NextIntlClientProvider>
       </body>
     </html>

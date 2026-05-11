@@ -91,6 +91,7 @@
     "todos": "Todos",
     "members": "Membres",
     "billing": "Facturation",
+    "projects": "Projets",
     "settings": "Réglages"
   },
   "Dashboard": {
@@ -100,6 +101,9 @@
   "DashboardIndex": {
     "title_bar": "Tableau de bord",
     "title_bar_description": "Bienvenue sur votre tableau de bord",
+    "total_projects": "Total des projets",
+    "in_progress": "En cours",
+    "completed": "Terminés",
     "message_state_title": "C'est parti",
     "message_state_description": "Vous pouvez personnaliser cette page en modifiant le fichier dans <code>dashboard/page.tsx</code>",
     "message_state_button": "Mettez une étoile sur GitHub",
@@ -130,6 +134,32 @@
     "message_state_title": "Paiement accepté",
     "message_state_description": "Votre paiement a été traité avec succès. Merci pour votre achat !",
     "message_state_button": "Revenir à la facturation"
+  },
+  "Projects": {
+    "title_bar": "Projets",
+    "title_bar_description": "Consultez et gérez vos projets solaires",
+    "new_project": "Nouveau projet",
+    "create_project": "Créer un projet",
+    "edit_project": "Modifier le projet",
+    "save": "Enregistrer",
+    "project_name": "Nom du projet",
+    "project_name_placeholder": "Entrez le nom du projet",
+    "address": "Adresse d'installation",
+    "address_placeholder": "Entrez l'adresse d'installation",
+    "capacity": "Capacité (kW)",
+    "capacity_placeholder": "Entrez la capacité en kW",
+    "status": "Statut",
+    "status_survey": "Étude",
+    "status_design": "Conception",
+    "status_proposal": "Proposition",
+    "status_install": "Installation",
+    "status_complete": "Terminé",
+    "cancel": "Annuler",
+    "submit": "Créer",
+    "search_placeholder": "Rechercher par nom ou adresse…",
+    "delete": "Supprimer",
+    "delete_confirm_title": "Supprimer le projet",
+    "delete_confirm_description": "Êtes-vous sûr de vouloir supprimer « {name} » ? Cette action est irréversible."
   },
   "DataTable": {
     "no_results": "Aucun résultat."

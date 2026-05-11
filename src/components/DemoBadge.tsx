@@ -3,9 +3,9 @@ export const DemoBadge = () => (
     <a
       href="https://nextjs-boilerplate.com/pro-saas-starter-kit"
     >
-      <div className="rounded-md bg-gray-900 px-3 py-2 font-semibold text-gray-100">
+      <div className="rounded-md bg-gray-900 px-3 py-2 font-semibold text-gray-100" translate="no">
         <span className="text-gray-500">Demo of</span>
-        {' SaaS Boilerplate'}
+        {' Open Solar'}
       </div>
     </a>
   </div>
