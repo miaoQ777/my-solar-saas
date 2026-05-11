@@ -13,13 +13,19 @@ const DashboardIndexPage = () => {
   const [total, setTotal] = useState(0);
   const [inProgress, setInProgress] = useState(0);
   const [completed, setCompleted] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   const loadStats = useCallback(async () => {
-    const projects = await getProjects();
-    setTotal(projects.length);
-    setInProgress(projects.filter(p => p.status !== 'complete').length);
-    setCompleted(projects.filter(p => p.status === 'complete').length);
-  }, []);
+    try {
+      const projects = await getProjects();
+      setTotal(projects.length);
+      setInProgress(projects.filter(p => p.status !== 'complete').length);
+      setCompleted(projects.filter(p => p.status === 'complete').length);
+      setError(null);
+    } catch {
+      setError(t('load_error'));
+    }
+  }, [t]);
 
   useEffect(() => {
     loadStats();
@@ -27,6 +33,12 @@ const DashboardIndexPage = () => {
 
   return (
     <>
+      {error && (
+        <div className="mb-4 rounded-md border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
+
       <TitleBar
         title={t('title_bar')}
         description={t('title_bar_description')}

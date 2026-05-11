@@ -61,18 +61,24 @@ const ProjectsPage = () => {
   const [editTarget, setEditTarget] = useState<Project | null>(null);
   const [search, setSearch] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<Project | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const filteredProjects = useMemo(() => {
     const q = search.toLowerCase();
     return projects.filter(
-      p => p.name.toLowerCase().includes(q) || p.address.toLowerCase().includes(q),
+      p => (p.name ?? '').toLowerCase().includes(q) || (p.address ?? '').toLowerCase().includes(q),
     );
   }, [projects, search]);
 
   const loadProjects = useCallback(async () => {
-    const data = await getProjects();
-    setProjects(data);
-  }, []);
+    try {
+      const data = await getProjects();
+      setProjects(data);
+      setError(null);
+    } catch {
+      setError(t('load_error'));
+    }
+  }, [t]);
 
   useEffect(() => {
     loadProjects();
@@ -104,28 +110,40 @@ const ProjectsPage = () => {
   }, [editTarget, editForm]);
 
   const handleCreate = async (values: FormValues) => {
-    await createProject(values);
-    createForm.reset();
-    setCreateOpen(false);
-    await loadProjects();
+    try {
+      await createProject(values);
+      createForm.reset();
+      setCreateOpen(false);
+      await loadProjects();
+    } catch {
+      setError(t('create_error'));
+    }
   };
 
   const handleEdit = async (values: FormValues) => {
     if (!editTarget) {
       return;
     }
-    await updateProject({ ...values, id: editTarget.id });
-    setEditTarget(null);
-    await loadProjects();
+    try {
+      await updateProject({ ...values, id: editTarget.id });
+      setEditTarget(null);
+      await loadProjects();
+    } catch {
+      setError(t('update_error'));
+    }
   };
 
   const handleDelete = async () => {
     if (!deleteTarget) {
       return;
     }
-    await deleteProject(deleteTarget.id);
-    setDeleteTarget(null);
-    await loadProjects();
+    try {
+      await deleteProject(deleteTarget.id);
+      setDeleteTarget(null);
+      await loadProjects();
+    } catch {
+      setError(t('delete_error'));
+    }
   };
 
   const columns: ColumnDef<Project>[] = [
@@ -267,6 +285,12 @@ const ProjectsPage = () => {
           </DialogContent>
         </Dialog>
       </div>
+
+      {error && (
+        <div className="mb-4 rounded-md border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
 
       <div className="mb-4">
         <div className="relative max-w-sm">

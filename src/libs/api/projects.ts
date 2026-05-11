@@ -37,7 +37,7 @@ export async function createProject(input: CreateProjectInput): Promise<Project>
   }
 
   const project = {
-    id: String(Date.now()),
+    id: crypto.randomUUID(),
     userId,
     ...input,
   };

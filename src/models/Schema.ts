@@ -1,5 +1,8 @@
+import { sql } from 'drizzle-orm';
 import {
   bigint,
+  check,
+  index,
   pgTable,
   serial,
   text,
@@ -46,19 +49,31 @@ export const organizationSchema = pgTable(
   },
 );
 
-export const projectSchema = pgTable('project', {
-  id: text('id').primaryKey(),
-  userId: text('user_id').notNull(),
-  name: text('name').notNull(),
-  status: text('status').notNull(),
-  address: text('address').notNull(),
-  capacity: text('capacity').notNull(),
-  updatedAt: timestamp('updated_at', { mode: 'date' })
-    .defaultNow()
-    .$onUpdate(() => new Date())
-    .notNull(),
-  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
-});
+export const projectSchema = pgTable(
+  'project',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id').notNull(),
+    name: text('name').notNull(),
+    status: text('status').notNull(),
+    address: text('address').notNull(),
+    capacity: text('capacity').notNull(),
+    updatedAt: timestamp('updated_at', { mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+    createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  },
+  (table) => {
+    return {
+      userIdIdx: index('project_user_id_idx').on(table.userId),
+      statusCheck: check(
+        'project_status_check',
+        sql`${table.status} IN ('survey', 'design', 'proposal', 'install', 'complete')`,
+      ),
+    };
+  },
+);
 
 export const todoSchema = pgTable('todo', {
   id: serial('id').primaryKey(),

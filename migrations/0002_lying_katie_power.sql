@@ -1,0 +1,2 @@
+CREATE INDEX "project_user_id_idx" ON "project" USING btree ("user_id");--> statement-breakpoint
+ALTER TABLE "project" ADD CONSTRAINT "project_status_check" CHECK ("project"."status" IN ('survey', 'design', 'proposal', 'install', 'complete'));

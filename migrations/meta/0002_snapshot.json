@@ -1,6 +1,6 @@
 {
-  "id": "c4242c16-9caa-4bff-8e02-e83c4cff85c9",
-  "prevId": "17edf69f-be24-4a28-8519-6da3789a0048",
+  "id": "03845840-c26e-4b2a-b554-574a5512f2b1",
+  "prevId": "c4242c16-9caa-4bff-8e02-e83c4cff85c9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -138,12 +138,33 @@
           "default": "now()"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "project_user_id_idx": {
+          "name": "project_user_id_idx",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
-      "checkConstraints": {},
+      "checkConstraints": {
+        "project_status_check": {
+          "name": "project_status_check",
+          "value": "\"project\".\"status\" IN ('survey', 'design', 'proposal', 'install', 'complete')"
+        }
+      },
       "isRLSEnabled": false
     },
     "public.todo": {

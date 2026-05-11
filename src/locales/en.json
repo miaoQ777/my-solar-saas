@@ -104,6 +104,7 @@
     "total_projects": "Total Projects",
     "in_progress": "In Progress",
     "completed": "Completed",
+    "load_error": "Failed to load dashboard data. Please try again.",
     "message_state_title": "Let's get started",
     "message_state_description": "You can customize this page by editing the file at <code>dashboard/page.tsx</code>",
     "message_state_button": "Star on GitHub",
@@ -159,7 +160,11 @@
     "search_placeholder": "Search by name or address…",
     "delete": "Delete",
     "delete_confirm_title": "Delete Project",
-    "delete_confirm_description": "Are you sure you want to delete \"{name}\"? This action cannot be undone."
+    "delete_confirm_description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+    "load_error": "Failed to load projects. Please try again.",
+    "create_error": "Failed to create project. Please try again.",
+    "update_error": "Failed to update project. Please try again.",
+    "delete_error": "Failed to delete project. Please try again."
   },
   "DataTable": {
     "no_results": "No results."

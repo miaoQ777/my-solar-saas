@@ -8,7 +8,7 @@ import type { PgliteDatabase } from 'drizzle-orm/pglite';
 import { drizzle as drizzlePglite } from 'drizzle-orm/pglite';
 import { migrate as migratePglite } from 'drizzle-orm/pglite/migrator';
 import { PHASE_PRODUCTION_BUILD } from 'next/dist/shared/lib/constants';
-import { Client } from 'pg';
+import { Pool } from 'pg';
 
 import * as schema from '@/models/Schema';
 
@@ -18,10 +18,9 @@ let client;
 let drizzle;
 
 if (process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD && Env.DATABASE_URL) {
-  client = new Client({
+  client = new Pool({
     connectionString: Env.DATABASE_URL,
   });
-  await client.connect();
 
   drizzle = drizzlePg(client, { schema });
   await migratePg(drizzle, {
